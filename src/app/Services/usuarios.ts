@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class UsuariosService {
 
-  private readonly url = 'https://bluewave-production-d04b6e52.up.railway.app/api/v1';
+  private readonly url = 'https://bluewavefronted-production.up.railway.app/api/v1';
 
   constructor(private http: HttpClient) {}
 
