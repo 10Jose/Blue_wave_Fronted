@@ -1,0 +1,9 @@
+<h2>Competencias</h2>
+
+@if (cargando) {
+  <p>Cargando...</p>
+} @else if (error) {
+  <p style="color: red;">{{ error }}</p>
+} @else {
+  <app-reusable-table [dataSource]="competitions"></app-reusable-table>
+}

@@ -1,0 +1,90 @@
+<div class="login-wrapper">
+  <mat-card class="login-card">
+
+    <div class="login-header">
+      <mat-icon class="login-logo">pool</mat-icon>
+      <h1>Blue Wave</h1>
+      <p>Inicia sesión para continuar</p>
+    </div>
+
+    <mat-card-content>
+      <!-- #loginForm="ngForm" permite saber si todo el formulario es válido -->
+      <form #loginForm="ngForm" (ngSubmit)="login()" class="login-form">
+
+        <!-- ─── Email ──────────────────────────── -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Correo electrónico</mat-label>
+          <input
+            matInput
+            type="email"
+            [(ngModel)]="email"
+            name="email"
+            #emailInput="ngModel"
+            placeholder="tu@email.com"
+            required
+            email
+            [disabled]="cargando">
+          <mat-icon matPrefix>email</mat-icon>
+
+          <!-- Mensajes de error (solo se muestran si el campo es inválido y ha sido tocado) -->
+          @if (emailInput.invalid && (emailInput.touched || emailInput.dirty)) {
+            @if (emailInput.hasError('required')) {
+              <mat-error>El correo es obligatorio</mat-error>
+            }
+            @if (emailInput.hasError('email')) {
+              <mat-error>Ingresa un correo válido</mat-error>
+            }
+          }
+        </mat-form-field>
+
+        <!-- ─── Contraseña ─────────────────────── -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Contraseña</mat-label>
+          <input
+            matInput
+            [type]="showPassword ? 'text' : 'password'"
+            [(ngModel)]="password"
+            name="password"
+            #passwordInput="ngModel"
+            placeholder="••••••••"
+            required
+            minlength="6"
+            [disabled]="cargando">
+          <mat-icon matPrefix>lock</mat-icon>
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="showPassword = !showPassword"
+            [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+            [disabled]="cargando">
+            <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+
+          @if (passwordInput.invalid && (passwordInput.touched || passwordInput.dirty)) {
+            @if (passwordInput.hasError('required')) {
+              <mat-error>La contraseña es obligatoria</mat-error>
+            }
+            @if (passwordInput.hasError('minlength')) {
+              <mat-error>Debe tener al menos 6 caracteres</mat-error>
+            }
+          }
+        </mat-form-field>
+
+        <!-- ─── Botón (se deshabilita si el formulario es inválido) ── -->
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          class="login-button"
+          [disabled]="cargando || loginForm.invalid">
+          <ng-container>
+            <mat-icon>login</mat-icon>
+            <span>Ingresar</span>
+          </ng-container>
+        </button>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
