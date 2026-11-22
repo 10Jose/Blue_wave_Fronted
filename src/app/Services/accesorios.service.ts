@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class AccesoriosService {
   private http = inject(HttpClient);
-  private url = 'http://localhost:3000/api/v1/accessories';
+  private url = 'bluewave-production-d04b6e52.up.railway.app';
 
   getAccesorios(): Observable<any[]> {
     return this.http.get<any[]>(this.url);
