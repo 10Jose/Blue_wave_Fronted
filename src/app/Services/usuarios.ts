@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class UsuariosService {
 
-  private readonly url = 'https://bluewavefronted-production.up.railway.app/api/v1';
+  private readonly url = 'https://bluewavefronted-production.up.railway.app/api/v1/swimmers';
 
   constructor(private http: HttpClient) {}
 
