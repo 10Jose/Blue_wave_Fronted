@@ -1,9 +1,0 @@
-<h2>Accesorios</h2>
-
-@if (cargando) {
-  <p>Cargando...</p>
-} @else if (error) {
-  <p style="color: red;">{{ error }}</p>
-} @else {
-  <app-reusable-table [dataSource]="accesorios"></app-reusable-table>
-}
