@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -11,21 +11,6 @@ import { MatIconModule } from '@angular/material/icon';
 
 import Swal from 'sweetalert2';
 import { AuthService } from '../../Services/auth.service';
-
-const CREDENTIALS = [
-  {
-    email: 'juan.perez@mail.com',
-    password: 'juan123',
-    user: {
-      id: 1,
-      name: 'Juan Pérez',
-      document: '1001',
-      email: 'juan.perez@mail.com',
-      category: 'youth',
-      active: true,
-    },
-  },
-];
 
 @Component({
   selector: 'app-login',
@@ -50,42 +35,46 @@ export class Login {
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private recarga: ChangeDetectorRef
   ) {}
 
   async login() {
     this.cargando = true;
 
-    const found = CREDENTIALS.find(
-      (c) => c.email === this.email && c.password === this.password
-    );
+    this.authService.login(this.email, this.password).subscribe({
+      next: async (res: any) => {
+        this.cargando = false;
 
-    if (!found) {
-      this.cargando = false;
-      await Swal.fire({
-        title: 'Oops...',
-        text: 'Correo o contraseña incorrectos',
-        icon: 'error',
-        confirmButtonText: 'Intentar de nuevo',
-        confirmButtonColor: '#d33',
-      });
-      return;
-    }
+         await Swal.fire({
+          title: '¡Bienvenido!',
+          text: `Hola, ${res.user.name}`,
+          icon: 'success',
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false,
+        });
 
-    if (typeof localStorage !== 'undefined') {
-      localStorage.setItem('user', JSON.stringify(found.user));
-    }
-    this.authService.currentUser.set(found.user);
+        this.router.navigate(['/Usuario']);
+      },
+      error: async (err: any) => {
+        this.cargando = false;
+        this.recarga.detectChanges()
 
-    await Swal.fire({
-      title: '¡Bienvenido!',
-      text: `Hola, ${found.user.name}`,
-      icon: 'success',
-      timer: 2000,
-      timerProgressBar: true,
-      showConfirmButton: false,
+        const mensaje = err.error?.message || 'Error al iniciar sesión';
+
+        await Swal.fire({
+          title: 'Oops...',
+          text: mensaje,
+          icon: 'error',
+          confirmButtonText: 'Intentar de nuevo',
+          confirmButtonColor: '#d33',
+        });
+      },
     });
-
-    this.router.navigate(['/Usuario']);
   }
 }
+
+
+
+

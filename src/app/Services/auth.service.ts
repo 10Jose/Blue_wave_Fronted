@@ -11,8 +11,8 @@ export class AuthService {
 
   currentUser = signal<any>(this.getUser());
 
-  login(email: string): Observable<any> {
-    return this.http.post(`${this.url}/login`, { email }).pipe(
+  login(email: string, password: string): Observable<any> {
+    return this.http.post(`${this.url}/login`, { email, password }).pipe(
       tap((res: any) => {
         if (isPlatformBrowser(this.platformId)) {
           localStorage.setItem('user', JSON.stringify(res.user));
