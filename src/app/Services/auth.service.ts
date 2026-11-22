@@ -6,7 +6,7 @@ import { Observable, tap } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private http = inject(HttpClient);
-  private url = 'http://localhost:3000/api/v1/auth';
+  private url = 'bluewave-production-d04b6e52.up.railway.app';
   private platformId = inject(PLATFORM_ID);
 
   currentUser = signal<any>(this.getUser());
